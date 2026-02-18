@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AMI_ID="ami-0220d79f3f480ecf5"
-SG_ID="sg-08a75b31e6d956d73" 
+SG_ID="sg-08a75b31e6d956d73"
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
 ZONE_ID="Z09404561CJNYF83THUCK"
 DOMAIN_NAME="medaknaresh.digital" 
