@@ -3,7 +3,7 @@
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-08a75b31e6d956d73" 
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
-ZONE_ID="Z032558618100M4EJX8X4" 
+ZONE_ID="Z09404561CJNYF83THUCK" 
 DOMAIN_NAME="medaknaresh.digital" 
 
 for instance in ${INSTANCES[@]}
@@ -15,7 +15,7 @@ do
         
     else
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
-    
+
     fi
     echo "$instance IP address: $IP"
 
