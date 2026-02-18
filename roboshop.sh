@@ -1,7 +1,7 @@
 #!/bin/bash
 
-AMI_ID=""
-SG_ID="sg-08a75b31e6d956d73" 
+AMI_ID="ami-0220d79f3f480ecf5"
+SG_ID="sgr-0a1735f9641e1fcc9" 
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
 ZONE_ID="Z09404561CJNYF83THUCK" 
 DOMAIN_NAME="medaknaresh.digital" 
@@ -27,7 +27,7 @@ do
         ,"Changes": [{
         "Action"              : "UPSERT"
         ,"ResourceRecordSet"  : {
-            "Name"              : "'$instance'"."'$DOMAIN_NAME'"
+            "Name"              : "'$instance'"."'$DOMAIN_NAME
             ,"Type"             : "A"
             ,"TTL"              : 1
             ,"ResourceRecords"  : [{
