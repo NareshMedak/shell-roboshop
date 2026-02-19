@@ -35,42 +35,44 @@ VALIDATE(){
 }
 
 
-   dnf module disable nodejs -y
-   VALIDATE $? "Disbaling default nodejs"
+   dnf module disable nodejs -y &>>$LOG_FILE
+   VALIDATE $? "Disbaling default nodejs" &>>$LOG_FILE
 
-   dnf module enable nodejs:20 -y 
+   dnf module enable nodejs:20 -y  &>>$LOG_FILE
    VALIDATE $? "Enabling nodejs:20"
 
-   dnf install nodejs -y
+   dnf install nodejs -y &>>$LOG_FILE
    VALIDATE $? "Installing nodejs:20"
 
-   useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+   useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
    VALIDATE $? "Creating roboshop system user"
 
    mkdir /app 
    VALIDATE $? "Creating app directory"
 
-   curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+   curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
    VALIDATE $? "Downloadig the catalogue"
 
 cd /app 
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping the catalogue"
 
-npm install 
+npm install &>>$LOG_FILE
 VALIDATE $? "Installing the dependicies"
 
 cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copying catalogue service"
 
 
-systemctl daemon-reload
-systemctl enable catalogue
+systemctl daemon-reload &>>$LOG_FILE
+systemctl enable catalogue &>>$LOG_FILE
 systemctl start catalogue
 VALIDATE $? "Starting Catalogue"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB Client"
 
 mongosh --host mongodb.medaknaresh.digital </app/db/master-data.js
+VALIDATE $? "Loading data into MongoDB"
+
