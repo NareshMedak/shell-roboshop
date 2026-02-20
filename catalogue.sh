@@ -52,7 +52,7 @@ VALIDATE(){
    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
    VALIDATE $? "Creatig roboshop system user"
 else
-    echo -e "system user roboshop already created...$Y $SKIPPING $N
+    echo -e "system user roboshop already created...$Y $SKIPPING $N"
 fi
    mkdir -p /app 
    VALIDATE $? "Creating app directory"
@@ -80,6 +80,6 @@ cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB Client"
 
-mongosh --host mongodb.medaknaresh.digital </app/db/master-data.js
+mongosh --host mongodb.medaknaresh.digital </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "Loading data into MongoDB"
 
