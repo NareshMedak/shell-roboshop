@@ -45,10 +45,16 @@ VALIDATE(){
    dnf install nodejs -y &>>$LOG_FILE
    VALIDATE $? "Installing nodejs:20"
 
-   useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-   VALIDATE $? "Creating roboshop system user"
+   id roboshop
 
-   mkdir /app 
+ if [ $? - ne 0]
+ then
+   useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+   VALIDATE $? "Creatig roboshop system user"
+else
+    echo -e "system user roboshop already created...$Y $SKIPPING $N
+fi
+   mkdir -p /app 
    VALIDATE $? "Creating app directory"
 
    curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
