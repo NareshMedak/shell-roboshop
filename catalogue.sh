@@ -15,7 +15,7 @@ echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 
 #check the priveleges or not 
 
-id roboshop
+
 if [ $USERID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -47,7 +47,7 @@ VALIDATE(){
 
    id roboshop
 
- if [ $? - ne 0]
+ if [ $? - ne 0 ]
  then
    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
    VALIDATE $? "Creatig roboshop system user"
