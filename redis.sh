@@ -14,8 +14,6 @@ mkdir -p $LOGS_FOLDER
 echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 
 #check the priveleges or not 
-
-
 if [ $USERID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -35,7 +33,6 @@ VALIDATE(){
     fi
 }
 
-
 dnf module disable redis -y
 VALIDATE $? "Disabling the redis"
 
@@ -49,7 +46,10 @@ sed -i -e 's/127.0.0.0/0.0.0.0/g' -e '/protected mode/ c protected mode no'/ /et
 VALIDATE $? "Edited redis.conf to accept remote connections"
 
 systemctl enable redis &>>LOG_FILE
-VALIDATE $? "Started Redis" 
+VALIDATE $? "Enabling Redis"
+
+systemctl start redis
+VALIDATE $? "Started Redis"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
