@@ -55,24 +55,24 @@ fi
 mkdir -p /app 
 VALIDATE $? "Creating app directory"
 
-curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
-VALIDATE $? "Downloading cart"
+curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>>$LOG_FILE
+VALIDATE $? "Downloading user"
 
 rm -rf /app/*
 cd /app 
-unzip /tmp/cart.zip &>>$LOG_FILE
-VALIDATE $? "unzipping cart"
+unzip /tmp/user.zip &>>$LOG_FILE
+VALIDATE $? "unzipping user"
 
 npm install &>>$LOG_FILE
 VALIDATE $? "Installing Dependencies"
 
-cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
-VALIDATE $? "Copying cart service"
+cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
+VALIDATE $? "Copying user service"
 
 systemctl daemon-reload &>>$LOG_FILE
-systemctl enable cart  &>>$LOG_FILE
-systemctl start cart
-VALIDATE $? "Starting cart"
+systemctl enable user  &>>$LOG_FILE
+systemctl start user
+VALIDATE $? "Starting user"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
