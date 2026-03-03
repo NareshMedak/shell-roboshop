@@ -14,7 +14,7 @@ SCRIPT_DIR=$PWD
 mkdir -p $LOGS_FOLDER
 echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 
-# check the user has root priveleges or not
+#check the priveleges or not 
 if [ $USERID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -27,9 +27,9 @@ fi
 VALIDATE(){
     if [ $1 -eq 0 ]
     then
-        echo -e "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
+        echo -e  "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
     else
-        echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
+        echo -e  "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1
     fi
 }
@@ -45,37 +45,36 @@ VALIDATE $? "Installing nodejs:20"
 
 id roboshop
 if [ $? -ne 0 ]
-then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-    VALIDATE $? "Creating roboshop system user"
+then 
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+VALIDATE $? "Creating roboshop system user"
 else
-    echo -e "System user roboshop already created ... $Y SKIPPING $N"
-fi
+echo -e "System user roboshop already created ... $Y SKIPPING $N"
+fi 
 
-mkdir -p /app 
+mkdir -p /app
 VALIDATE $? "Creating app directory"
 
-curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
+curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading cart"
 
 rm -rf /app/*
-cd /app 
+cd /app
 unzip /tmp/cart.zip &>>$LOG_FILE
-VALIDATE $? "unzipping cart"
+VALIDATE $? "unizipping cart"
 
 npm install &>>$LOG_FILE
 VALIDATE $? "Installing Dependencies"
 
 cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
-VALIDATE $? "Copying cart service"
-
+VALIDATE $? "copying cart service"
 
 systemctl daemon-reload &>>$LOG_FILE
-systemctl enable cart  &>>$LOG_FILE
+systemctl enable cart &>>$LOG_FILE
 systemctl start cart
 VALIDATE $? "Starting cart"
 
 END_TIME=$(date +%s)
-TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+TOTOAL_TIME=$ (( $END_TIME -$START_TIME ))
 
-echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
+echo -e "Script execution completed successfully, $Y time taken: $TOTAL_TIME seconds $N" |  tee -a $LOG_FILE
